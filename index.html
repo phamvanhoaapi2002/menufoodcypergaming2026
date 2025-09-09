@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VAN HOA GAMING</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+    body { background-color: #0c0f2c; color: white; }
+    .container { display: flex; height: 100vh; }
+
+    .sidebar {
+      width: 250px; background: #1a1c3a;
+      display: flex; flex-direction: column;
+      justify-content: space-between; padding: 20px;
+    }
+    .logo-section { text-align: center; }
+    .logo { width: 100px; margin-bottom: 10px; }
+    .menu button {
+      background: #243056; color: white; border: none;
+      padding: 12px; margin-top: 10px; width: 100%;
+      text-align: left; border-radius: 8px; cursor: pointer;
+    }
+    .menu button.active { background: #1777ff; }
+    .version { font-size: 12px; color: #ccc; }
+
+    .qr-box {
+      margin-top: 20px; text-align: center;
+    }
+    .qr-box h4 { font-size:14px; color:#ffd600; margin-bottom: 5px; }
+    .qr-box p { font-size:13px; margin:4px 0; }
+    .qr-box img {
+      width: 120px; border-radius: 8px;
+      border: 2px solid #ffd600; margin-top: 5px;
+    }
+
+    .main {
+      flex: 1; background: #0c0f2c; padding: 20px; overflow-y: auto;
+    }
+    .header h1 { font-size: 28px; color: #ffd600; margin-bottom: 20px; }
+    .header span { color: white; }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background-color: #1a1c3a;
+      border-radius: 30px;
+      padding: 8px 15px;
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 400px;
+    }
+    .search-bar .search-icon {
+      color: #ccc;
+      margin-right: 10px;
+      font-size: 18px;
+    }
+    .search-bar input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      font-size: 15px;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-bar input::placeholder {
+      color: #999;
+    }
+
+    .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+    .tabs button {
+      background: #1a1c3a; border: none;
+      padding: 10px 15px; color: white; border-radius: 5px;
+      cursor: pointer;
+    }
+    .tabs button.active { background: #1777ff; }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 15px;
+    }
+    .product {
+      background: #121540; border-radius: 10px;
+      padding: 10px; text-align: center; cursor: pointer;
+    }
+    .product img {
+      width: 100%; height: 120px; object-fit: cover; margin-bottom: 10px; border-radius: 8px; border: 2px solid #2a2f60; transition: transform 0.3s ease;
+    }
+    .product h4 { font-size: 14px; margin-bottom: 5px; }
+    .product p { color: #ffda00; font-weight: bold; }
+
+    .product img:hover {
+      transform: scale(1.05);
+      border-color: #ffd600;
+    }
+
+    .cart {
+      width: 300px; background: #171a3a;
+      display: flex; flex-direction: column;
+      justify-content: space-between; padding: 20px; overflow-y: auto;
+    }
+    .cart-empty { text-align: left; font-size: 14px; }
+    .cart-empty img {
+      width: 120px; display: block; margin: 0 auto 10px;
+    }
+    .cart-buttons {
+      display: flex; flex-direction: column; gap: 10px;
+      margin-top: 10px;
+    }
+    .cart-buttons button {
+      padding: 10px; border: none;
+      border-radius: 5px; cursor: pointer;
+    }
+    .btn-green { background-color: #00c853; color: white; }
+
+    /* === Nút BUY NOW mới === */
+    .custom-buy-now {
+      background: #84d13d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 20px;
+      color: white;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      gap: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      margin-top: 10px;
+    }
+
+    .custom-buy-now:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+    }
+
+    .custom-buy-now .icon-circle {
+      background-color: #ffd600;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .custom-buy-now .icon-circle img {
+      width: 24px;
+      height: 24px;
+    }
+
+    .buy-text {
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <div class="logo-section">
+        <img src="https://scontent.fhan14-4.fna.fbcdn.net/v/t39.30808-6/545622244_757830163831057_1659054301397739545_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeEIpyqq7-54RxUp4H4UyWVj6eQJ5n4TzbXp5AnmfhPNtV70kImv1uUf-xA8IYN-IqL5SgBuFkpC_OIbamoTF8C5&_nc_ohc=_ZY7SQ-VctcQ7kNvwH1Cdpa&_nc_oc=Adnrsaw6kky_HlSXhd5Dek3XTAD1h2G3AjQTXZ1GGCAaMWpKiw8l7GDXgVkXtQpAM8Q&_nc_zt=23&_nc_ht=scontent.fhan14-4.fna&_nc_gid=FQXegV1MqMx9GrL9GAUN3g&oh=00_AfbybSEMbWZwmR8TDEyL19zloiNYSzq-1VCGv3Swz-dnEw&oe=68C5E6CC" alt="Logo" class="logo" />
+        <h2>VĂN HOÀ GAMING</h2>
+        <p>MENU FOODS ĐA DẠNG</p>
+      </div>
+
+      <div class="menu">
+        <button>🔔 THÔNG BÁO</button>
+        <button class="active">🛒 DỊCH VỤ</button>
+      </div>
+
+      <div class="qr-box">
+        <h4>CHÀO MỪNG QUÝ KHÁCH ĐẾN VỚI VĂN HOÀ GAMING</h4>
+        <h4>QUÉT MÃ THANH TOÁN</h4>
+        <p>TECHCOMBANK</p>
+        <p>STK: <strong>99999999983868</strong></p>
+        <p>CTK: <strong>PHAM VAN HOA✔️</strong></p>
+        <p>📞: <strong>0869 719 516</strong></p>
+        <img src="https://img.vietqr.io/image/970407-99999999983868-compact2.png?accountName=PHAM%20VAN%20HOA" alt="QR Techcombank" />
+      </div>
+
+      <div class="version">v1.1.33</div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <h1><span>Truy cập tốc độ cao – chơi game mượt mà – làm việc hiệu quả! Tất cả có tại</span> VĂN HOÀ GAMING </h1>
+      </div>
+
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Tìm kiếm món ăn, sản phẩm..." oninput="searchProducts()" />
+      </div>
+
+      <div class="tabs">
+        <button class="active">TẤT CẢ</button>
+        <button>THỨC UỐNG</button>
+        <button>THUỐC LÁ</button>
+        <button>ĐỒ ĂN VẶT</button>
+        <button>THỨC ĂN</button>
+        <button>THẺ GAME </button>
+        <button>BẬT LỬA </button>
+		<button>NẠP TIỀN TÀI KHOẢN </button>
+      </div>
+
+      <div class="products" id="products"></div>
+    </div>
+
+    <div class="cart">
+      <div class="cart-empty"></div>
+      <div class="cart-buttons">
+        <button class="btn-green" onclick="showOrders()">Đơn hàng</button>
+        <!-- Nút XOÁ GIỎ HÀNG mới -->
+<button onclick="clearCart()" style="display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer;">
+  <img src="https://cdn-icons-png.flaticon.com/512/10967/10967115.png" alt="Xóa giỏ hàng" style="width: 30px; height: 30px;">
+  <span style="color: red; font-weight: bold; font-size: 16px;">XOÁ GIỎ HÀNG</span>
+</button>
+<small style="color: #ff9999; font-size: 12px;">(Xoá bỏ khi không còn nhu cầu đặt)</small>
+
+        
+        <!-- Nút BUY NOW mới -->
+        <div class="custom-buy-now" onclick="placeOrder()">
+          <div class="icon-circle">
+            <img src="https://cdn-icons-png.flaticon.com/512/1170/1170678.png" alt="Cart" />
+          </div>
+          <span class="buy-text">BUY NOW</span>
+        </div>
+
+        <p id="order-success" style="display:none; color: #00c853; font-weight:bold; margin-top:10px;">
+          ✅ Đặt hàng thành công!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal danh sách đơn hàng -->
+  <div id="orderList" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#080d2b; z-index:999; padding:20px; color:white; overflow:auto;">
+    <h2>Danh sách đơn hàng</h2>
+    <button onclick="closeOrders()" style="margin-bottom: 10px; padding: 6px 12px; background: #1777ff; border: none; color: white; border-radius: 5px;">Tiếp tục mua hàng</button>
+    <table border="1" width="100%" style="border-collapse:collapse; background:#0c113f; text-align:left;">
+      <thead>
+        <tr style="background:#1e2a60;">
+          <th style="padding:8px;">Mã đơn hàng</th>
+          <th>Ngày đặt hàng</th>
+          <th>Sản phẩm</th>
+          <th>Tổng tiền</th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody id="ordersTable"></tbody>
+    </table>
+  </div>
+
+  
+  <script>
+    const products = [
+      { name: "BÒ HÚC", price: "15000", img: "https://channel.mediacdn.vn/2021/10/26/photo-1-1635242372441841339470.jpg", category: "THỨC UỐNG" },
+	  { name: "USER VIP #001", price: "1000000", img: "https://upload.wikimedia.org/wikipedia/commons/1/12/User_icon_2.svg", category: "NẠP TIỀN TÀI KHOẢN" },
+      { name: "USER VIP #002", price: "500000", img: "https://upload.wikimedia.org/wikipedia/commons/6/6c/User_icon_3.svg", category: "NẠP TIỀN TÀI KHOẢN" },
+      { name: "USER VIP #003", price: "200000", img: "https://cdn-icons-png.flaticon.com/512/9131/9131478.png", category: "NẠP TIỀN TÀI KHOẢN" },
+      { name: "USER VIP #004", price: "100000", img: "https://cdn-icons-png.flaticon.com/512/9131/9131478.png", category: "NẠP TIỀN TÀI KHOẢN" },
+      { name: "USER VIP #005", price: "50000", img: "https://cdn-icons-png.flaticon.com/512/9131/9131478.png", category: "NẠP TIỀN TÀI KHOẢN" },
+
+	  { name: "BẬT LỬA THỐNG NHẤT", price: "5000", img: "https://vn-live-01.slatic.net/p/d34dbb9c845697b24dfac4df1dacd30d.jpg", category: "BẬT LỬA" },
+      { name: "BẬT LỬA KHÒ GAS", price: "5000", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYatwwiojjQMFY7z_99kO0llcqk7JsSnH3DeIaBj_aIYzek7tseit77w5W6pwfaBgrfcM&usqp=CAU", category: "BẬT LỬA" },
+      { name: "NUTRI BOOST DÂU", price: "12000", img: "https://product.hstatic.net/1000246697/product/8935049510758_f4b2ea03cbee48e790029bc4b8d64ebb_b666127eb27947d6aabb6b8e75f16554_master.jpg", category: "THỨC UỐNG" },
+      { name: "COCA COLA", price: "12000", img: "https://bizweb.dktcdn.net/thumb/grande/100/469/765/products/1503-9de8f3562b364e56b550ff30bc493122-2c0db7cc76fd4b7f8b3c767fb24bc277-d4f804d8fc474b4bae5f628ff0d632e0-master.jpg", category: "THỨC UỐNG" },
+      { name: "WAKE UP 247", price: "12000", img: "https://cdn.tgdd.vn/Products/Images/3226/96365/bhx/nuoc-tang-luc-wake-up-247-vi-ca-phe-chai-330ml-09112018114755.jpg", category: "THỨC UỐNG" },
+      { name: "STING XANH THÁI CÔNG", price: "12000", img: "https://product.hstatic.net/1000288770/product/nuoc_tang_luc_sting_sleek_huong_viet_quat_lon_320ml_c99347b59b8840b6aaa811959ae51733_master.jpg", category: "THỨC UỐNG" },
+      { name: "NUMBER ONE", price: "12000", img: "https://d1v5l30g8wuyvb.cloudfront.net/number1.com.vn/uploads/2017/06/nuoc-tang-luc-3.jpg", category: "THỨC UỐNG" },
+      { name: "TRÀ DR.THANH", price: "12000", img: "https://lanchi.vn/wp-content/uploads/2021/12/TRA-THAO-MOC-DR-THANH-330ML-300x225.jpg", category: "THỨC UỐNG" },
+      { name: "HỔ VẰN", price: "12000", img: "https://lanchi.vn/wp-content/uploads/2021/12/TANG-LUC-HO-VAN-245ML-150x150.jpg", category: "THỨC UỐNG" },
+      { name: "MIRINDA SODA KEM", price: "12000", img: "https://cdn.tgdd.vn/Products/Images/2443/158318/bhx/nuoc-ngot-mirinda-vi-soda-kem-lon-320ml-202312260859381014.jpg", category: "THỨC UỐNG" },
+      { name: "MIRINDA  ĐÁ ME", price: "12000", img: "https://bizweb.dktcdn.net/thumb/grande/100/469/765/products/mi.jpg", category: "THỨC UỐNG" },
+      { name: "MIRINDA CAM", price: "12000", img: "https://product.hstatic.net/1000288770/product/nuoc_ngot_mirinda_vi_cam_lon_330ml_ed72c855bec44a34b84db5fe21ad5154_master.jpg", category: "THỨC UỐNG" },
+      { name: "TRÀ CHANH C2", price: "10000", img: "https://cdn.tgdd.vn/Products/Images/8938/76562/bhx/tra-xanh-c2-huong-chanh-360ml-201912090949471802.jpg", category: "THỨC UỐNG" },
+      { name: "THUỐC LÁ ZEST MARULA", price: "20000", img: "https://thuoclahanoi.com/wp-content/uploads/2021/06/Marula-1.jpg", category: "THUỐC LÁ" },
+	  { name: "THUỐC LÁ VINATABA", price: "20000", img: "https://minhcaumart.vn//media/com_eshop/products/resized/10035900-1000x1000.webp", category: "THUỐC LÁ" },
+	  { name: "THUỐC LÁ JET", price: "20000", img: "http://bidak86.com/upload/product/321288-2934.jpg", category: "THUỐC LÁ" },
+	  { name: "THẺ GARENA ", price: "20000", img: "https://vn-test-11.slatic.net/p/b3c72cd8af148e5ac7e13880018a37bd.jpg", category: "THẺ GAME" },
+      { name: "THẺ GARENA ", price: "50000", img: "https://img.lazcdn.com/g/p/bedf1d767310464fca6bc464393a9849.jpg_720x720q80.jpg_.webp", category: "THẺ GAME" },
+      { name: "THẺ GARENA ", price: "100000", img: "https://img.lazcdn.com/g/p/0490ab9913131c1029cdca258e30869f.jpg_720x720q80.jpg_.webp", category: "THẺ GAME" },
+      { name: "THẺ GARENA ", price: "200000", img: "https://scontent.fhan14-1.fna.fbcdn.net/v/t39.30808-6/545559978_757800167167390_2083839968607411211_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFmRx6fI1rrPOX9tdnvu00cxOD7JL0Z5YjE4PskvRnliISHQ8gVgHYYVApVfPZ2d3rUQHoBxq2foW6XWZGkzU3S&_nc_ohc=DW6-VUTY_o8Q7kNvwGeBWx9&_nc_oc=AdmYjIh5bUDeCmkigSCgPVUoRSXzkf5S6EkQKLIsK8ulBj1t7TH8LdnJIOSUYl2eVWk&_nc_zt=23&_nc_ht=scontent.fhan14-1.fna&_nc_gid=5Ey5o5s4J3dF2pJ3Kl8KjQ&oh=00_Afb23616m0Gfuh5UNGqIihtxjbJw3rjVwI9maFzo5n3JYw&oe=68C5E68F", category: "THẺ GAME" },
+      { name: "THẺ GARENA ", price: "500000", img: "https://scontent.fhan3-3.fna.fbcdn.net/v/t39.30808-6/545414008_757801890500551_8049366000852236373_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeFNe2HbZZqLK_ZE8ugM0XOXajiAtJYYIJ9qOIC0lhggn2KEL2BTVRcqaYZ1qWmu8KSNN-GaBdaRyZ0gu3kAQI7H&_nc_ohc=fUgBVb5zHnoQ7kNvwGNAMdp&_nc_oc=Adk-t3Aw6theQzZXKPgAWgXiocppiRHRx0Gt2FbGYqFSf04HhJBbKyI5qKDGuUJ3oPA&_nc_zt=23&_nc_ht=scontent.fhan3-3.fna&_nc_gid=d3CfOTuxpjZkSdExjf7xYw&oh=00_AfanobNN5TFoGdvkhBRIfDEiwxtNVVsrqG0UNf7Xzy1LtA&oe=68C60B0C", category: "THẺ GAME" },
+	  { name: "THUỐC LÁ SAIGON SILVER", price: "20000", img: "https://cdn-images.kiotviet.vn/ribimarts/e0d514a2ba71488897d69f5845c28446.jpeg", category: "THUỐC LÁ" },
+      { name: "THUỐC LÁ SAIGON SLIM", price: "20000", img: "https://cdn-images.kiotviet.vn/vicomart/fcbbde1dd94e4fd8a03c3d99257c74df.jpg", category: "THUỐC LÁ" },
+      { name: "THUỐC LÁ 555", price: "20000", img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/389/887/products/2406500025-1.jpg?v=1591624874290", category: "THUỐC LÁ" },
+	  { name: "THUỐC LÁ DU LỊCH", price: "20000", img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/493/508/products/9563a5bd-4626-4a05-8d35-4d75bca81731.jpg?v=1722997940540", category: "THUỐC LÁ" },
+	  { name: "THUỐC LÁ TL CỨNG", price: "20000", img: "https://minhcaumart.vn//media/com_eshop/products/resized/8935047670256-1000x1000.webp", category: "THUỐC LÁ" },	  
+      { name: "THUỐC LÁ BLUE SEAL", price: "20000", img: "https://tpackss.globaltobaccocontrol.org/sites/default/files/styles/500x500/public/pack_images/VIE_HAN_H1_03_007_0_0_2_2.JPG.webp?itok=dtX1JUyL", category: "THUỐC LÁ" },
+      { name: "THUỐC LÁ TL MỀM", price: "18000", img: "https://product.hstatic.net/200000353797/product/adac57a9769244cf85718503a3046080_108ae4e41c504b1a86ad9a04dac69488_grande.png", category: "THUỐC LÁ" },
+      { name: "BIMBIM O'STAR", price: "10000", img: "https://minhcaumart.vn//media/com_eshop/products/resized/8936036020786-1000x1000.webp", category: "ĐỒ ĂN VẶT" },
+	  { name: "BÒ KHÔ", price: "10000", img: "https://posi.com.vn/wp-content/uploads/2024/11/Kho-bo-45g-1.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "THỊT TRÂU GÁC BẾP", price: "10000", img: "https://huongnui.vn/wp-content/uploads/2017/12/thit-trau-gac-bep-1.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "BÁNH BAO", price: "10000", img: "https://thophat.com/wp-content/uploads/2022/03/BB-Chay-400g-1.jpg", category: "THỨC ĂN" },
+      { name: "KẸO CHIPCHIP JELLY", price: "10000", img: "http://www.haihaco.com.vn/upload/image/san-pham/jelly-chip/chip200new.png", category: "ĐỒ ĂN VẶT" },
+      { name: "BÒ KHÔ", price: "10000", img: "https://posi.com.vn/wp-content/uploads/2024/11/Kho-bo-45g-1.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "BÁNH NƯỚNG", price: "10000", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwM3VH2hpgHhaPaqxkPJMC2SaT9d394Ip7Kg&s", category: "ĐỒ ĂN VẶT" },
+      { name: "KẸO CAOSU", price: "10000", img: "https://file.hstatic.net/200000240305/file/keo_cao_su_maydonggoibaobi.vn_882174f87bfc4988a8c81abd55503b83_grande.png", category: "ĐỒ ĂN VẶT" },
+      { name: "TĂM CAY ĐEN", price: "10000", img: "https://bizweb.dktcdn.net/thumb/1024x1024/100/501/724/products/tamcayden-sesofoods-1.jpg?v=1711706211213", category: "ĐỒ ĂN VẶT" },
+      { name: "BIMBIM OISHI BÍ ĐỎ", price: "10000", img: "https://cdn.tgdd.vn/Products/Images/3364/79708/bhx/snack-bi-do-vi-bo-nuong-oishi-goi-35g-202306200934503576.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "BIMBIM OISHI SNACK BẮP NGỌT", price: "10000", img: "https://cdn.tgdd.vn/Products/Images/3364/79710/bhx/snack-bap-ngot-oishi-goi-40g-202306200906196898.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "BIMBIM OISHI INDO CHIPS", price: "10000", img: "https://cdn.tgdd.vn/Products/Images/3364/79792/bhx/snack-phong-muc-oishi-indo-chips-goi-39g-202306200936486033.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "BIMBIM OISHI SNACK BẮP VỊ PHÔ MAI", price: "10000", img: "https://cdn.tgdd.vn/Products/Images/3364/198852/bhx/snack-bap-vi-pho-mai-oishi-goi-42g-202306200926084456.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "BIMBIM OISHI ONION RINGS", price: "10000", img: "https://cdn.tgdd.vn/Products/Images/3364/79730/bhx/snack-hanh-oishi-orion-rings-goi-39g-202306200914016112.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "BIMBIM OISHI MARTY'S", price: "10000", img: "https://cdn.tgdd.vn/Products/Images/3364/79727/bhx/snack-chay-vi-da-heo-quay-oishi-martys-goi-39g-202306200930005796.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "SNACK KHOAI TÂY", price: "9000", img: "https://cdn.tgdd.vn/Products/Images/3364/193330/bhx/snack-khoai-tay-vi-tu-nhien-classic-lays-goi-95g-202304130909042902.jpg", category: "ĐỒ ĂN VẶT" },
+      { name: "MÌ HẢO HẢO", price: "5000", img: "https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-ll6kzt04w7ue4d@resize_w450_nl.webp", category: "THỨC ĂN" },
+	  { name: "BÁNH MỲ PATE", price: "5000", img: "https://dukaan.b-cdn.net/700x700/webp/upload_file_service/870aca81-6487-4a2d-8771-f5010ce470ed/banh-mi-suon-cha-chay-jpg", category: "THỨC ĂN" },
+      { name: "MỲ TÔM HỘP CUNG ĐÌNH ", price: "5000", img: "https://lanchi.vn/wp-content/uploads/2021/12/MY-LY-CUNG-DINH-LAU-TOM-CHUA-CAY-65G.jpg-300x225.jpg", category: "THỨC ĂN" },
+      { name: "MỲ  TÔM HỘP HẢO HẢO ", price: "5000", img: "https://kingfoodmart.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fsc_pcm_product%2Fprod%2F2023%2F4%2F28%2F2630-93051.jpg&w=1920&q=75", category: "THỨC ĂN" },
+      { name: "MỲ TÔM HỘP OMACHI", price: "5000", img: "https://kingfoodmart.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fsc_pcm_product%2Fprod%2F2023%2F4%2F28%2F1960-93276.jpg&w=1920&q=75", category: "THỨC ĂN" },
+
+      { name: "CƠM HỘP", price: "30000", img: "https://giadinh.mediacdn.vn/296230595582509056/2021/6/18/photo-3-16240104359751316427007.jpg", category: "THỨC ĂN" }
+    ];
+
+    const cart = [];
+    let orders = [];
+
+    function renderProducts(category = "TẤT CẢ", keyword = "") {
+      const productsDiv = document.getElementById("products");
+      productsDiv.innerHTML = "";
+      let filtered = category === "TẤT CẢ" ? products : products.filter(p => p.category === category);
+
+      if (keyword.trim() !== "") {
+        filtered = filtered.filter(p => p.name.toLowerCase().includes(keyword.toLowerCase()));
+      }
+
+      if (filtered.length === 0) {
+        productsDiv.innerHTML = "<p style='color:gray;'>Không tìm thấy sản phẩm phù hợp.</p>";
+        return;
+      }
+
+      filtered.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "product";
+        div.innerHTML = `<img src="${item.img}" alt="${item.name}" />
+                         <h4>${item.name}</h4>
+                         <p>${parseInt(item.price).toLocaleString()}đ</p>`;
+        div.onclick = () => addToCart(item);
+        productsDiv.appendChild(div);
+      });
+    }
+
+    function searchProducts() {
+      const keyword = document.getElementById("searchInput").value;
+      const activeCategory = document.querySelector(".tabs button.active").innerText;
+      renderProducts(activeCategory, keyword);
+    }
+
+    document.querySelectorAll(".tabs button").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        searchProducts();
+      };
+    });
+
+    function addToCart(product) {
+      const index = cart.findIndex(item => item.name === product.name);
+      if (index >= 0) {
+        cart[index].qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      const emptyDiv = document.querySelector(".cart-empty");
+      emptyDiv.innerHTML = "";
+      if (cart.length === 0) {
+        emptyDiv.innerHTML = `<img src="	https://cdn-icons-png.flaticon.com/512/5952/5952781.png" /><p>Giỏ hàng bạn chưa có sản phẩm</p>`;
+        return;
+      }
+      let total = 0;
+      let html = "<h3>Giỏ hàng:</h3>";
+      cart.forEach((item, index) => {
+        const price = parseInt(item.price);
+        const itemTotal = price * item.qty;
+        total += itemTotal;
+        html += `<div style="margin-bottom: 10px;">
+                  <strong>${item.name}</strong><br>
+                  <button onclick="changeQty(${index}, -1)">➖</button>
+                  <input type="number" min="1" value="${item.qty}" onchange="setQty(${index}, this.value)" style="width: 50px; text-align:center;">
+                  <button onclick="changeQty(${index}, 1)">➕</button>
+                  = <span style="color: #ffd600">${itemTotal.toLocaleString()}đ</span>
+                  <button onclick="removeFromCart(${index})" style="float:right; background:red; color:white; border:none; padding:3px 8px; border-radius:4px;">❌</button>
+                </div>`;
+      });
+      html += `<hr><p><strong>Tổng: <span style="color:#00ffcc">${total.toLocaleString()}đ</span></strong></p>`;
+      emptyDiv.innerHTML = html;
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty < 1) cart[index].qty = 1;
+      renderCart();
+    }
+
+    function setQty(index, value) {
+      const qty = parseInt(value);
+      cart[index].qty = isNaN(qty) || qty < 1 ? 1 : qty;
+      renderCart();
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function clearCart() {
+      cart.length = 0;
+      renderCart();
+    }
+
+    function placeOrder() {
+      if (cart.length === 0) {
+        alert("Bạn chưa có sản phẩm nào trong giỏ!");
+        return;
+      }
+      const total = cart.reduce((sum, item) => sum + item.qty * parseInt(item.price), 0);
+      const order = {
+        id: 'DH' + Math.floor(Math.random() * 100000),
+        date: new Date().toLocaleString(),
+        items: cart.map(i => `${i.name} x${i.qty}`).join(', '),
+        total: total.toLocaleString() + 'đ',
+        status: "<span style='color:#00c853;font-weight:bold;'>Đã đặt</span>"
+      };
+      orders.push(order);
+      clearCart();
+      document.getElementById("order-success").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("order-success").style.display = "none";
+      }, 3000);
+    }
+
+    function showOrders() {
+      document.getElementById("orderList").style.display = "block";
+      const table = document.getElementById("ordersTable");
+      table.innerHTML = "";
+      if (orders.length === 0) {
+        table.innerHTML = "<tr><td colspan='5' style='color:gray; padding:10px;'>Chưa có đơn hàng nào</td></tr>";
+        return;
+      }
+      orders.forEach(order => {
+        table.innerHTML += `<tr>
+                              <td style="padding:8px;">${order.id}</td>
+                              <td>${order.date}</td>
+                              <td>${order.items}</td>
+                              <td>${order.total}</td>
+                              <td>${order.status}</td>
+                            </tr>`;
+      });
+    }
+
+    function closeOrders() {
+      document.getElementById("orderList").style.display = "none";
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
